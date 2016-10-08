@@ -44,9 +44,55 @@
 						<li>Open source</li>
 					</ul>
 					<aside class="notes">
-						
+											 
 					</aside>
+				</section>
 				<section>
+					<h2>Alternative Tools</h2>
+					<ul>
+						<li>Ansible</li>
+						<li>Fabric</li>
+						<li>Puppet</li>
+						<li>SaltStack</li>
+					</ul>
+					<br/>
+					<a href="https://gist.github.com/jaceklaskowski/bd3d06489ec004af6ed9">Choosing a deployment tool - ansible vs puppet vs chef vs salt</a>
+					<aside class="notes">
+						Ένας πολύ καλός οδηγός που βρήκα για να επιλέξετε το deployment tool σας.						
+					</aside>
+				</section>
+				<section>					
+					<section>
+						<h2>How does it work</h2>	
+					</section>	
+					<section>
+						<img class="stretch" src="/img/chefos-diagram.svg"/>
+					</section>			
+					<section>
+						<h2>Chef Components</h2>
+						<ul>
+							<li>Chef DK</li>
+							<li>Chef Server</li>
+							<li>Chef Client</li>
+						</ul>
+						<aside class="notes">
+							The Chef DK runs on your workstation. It provides the tools you need for developing and testing your code locally, before deploying changes into production. It also contains test-kitchen and it’s testing frameworks to automatically test cookbook data across any combination of platforms, including ChefSpec and InSpec.
+
+							The Chef Server uses cookbooks as building blocks to describe your infrastructure. The Chef server also stores information about the systems you manage. It communicates with nodes running the Chef client to manage your entire application infrastructure.
+
+							Download Chef 12 server to get new features including:
+
+							Easy installation with an all-in-one installer in Ubuntu and Redhat
+							Manage 10,000+ nodes with a single Chef server
+							The following additional Chef features are free for up to 25 nodes					
+
+							A Chef Client is installed on nodes - your physical, virtual, or cloud machines that are managed by Chef. Each node configured as a Chef client regularly converges against the configuration policies you store on your Chef server to bring your systems to their desired state.
+
+							To Chef λειτουργεί με pull μοντέλο δηλαδή κατεβαίνουν οι αλλαγές από τον server στους client.
+							Υπάρχει και ένα εργαλείο Push Jobs ώστε να εκτελούνται εντολές μαζικά στους servers.
+						</aside>
+					</section>
+				</section>
 				<section>
 					<h2>Infrastructure as code sample</h2>
 				</section>
@@ -61,7 +107,14 @@
 					</aside>
 				</section>	
 				<section>
-					
+					<h2>Test Kitchen Setup</h2>
+					<ol>
+						<li>Install the kitchen-hyperv driver</li>
+						<li>Execute chef gem install kitchen-hyperv on powershell as Administrator</li>
+					</ol>
+					<aside class="notes">
+						Test Kitchen works with virtualization and cloud providers to create temporary instances to test your infrastructure code. We often call the software that connects Test Kitchen to the provider a driver.
+					</aside>
 				</section>
 			</div>
 		</div>
