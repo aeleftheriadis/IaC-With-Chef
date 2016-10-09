@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>IAC With Chef</title>
+		<title>IaC With Chef</title>
 		<meta name="author" content="Athanasios Eleftheriadis">
 		<meta name="description" content="A presentation about Infastructure as Code with Chef">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -119,14 +119,16 @@
 					<section>
 						<h2>Create a base virtual machine</h2>
 						<ol>
-							<li>Download the evaluation version of <a href="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO">Windows Server 2012 R2</a></li>
-							
-							<li>Execute <code class="hljs">Get-NetAdapter</code> and choose an adapter that has external network access</li>
+							<li>Download <a href="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO">Windows Server 2012 R2</a></li>
+							<li>Execute <code class="hljs">Get-NetAdapter</code></li>
 							<li>Choose this adapter with <code class="hljs">$net_adapter = Get-NetAdapter -Name Wi-Fi</code></li>
 							<li>Create the switch <code class="hljs">New-VMSwitch -Name ExternalSwitch -NetAdapterName $net_adapter.Name -AllowManagementOS $True -Notes "Provide public network access to VMs"</code></li>
 						</ol>
 						<aside class="notes">
-							2. Create a Hyper-V virtual switch so as to configure the base virtual image to have Internet access.
+							2.1 Choose an adapter that has external network access
+							2.2 Create a Hyper-V virtual switch so as to configure the base virtual image to have Internet access.
+							<br/>
+							Μπορεί να γίνει και απο GUI ανοίγοντας το Hyper-V Manager και επιλέγουμε Virtual Switch Manager
 						</aside>
 					</section>
 					<section>
@@ -152,6 +154,10 @@
 						</aside>
 					</section>
 				</section>
+				<section>
+					<h2>Create a windows cookbook</h2>					
+					<code class="hljs">chef generate cookbook cookbooks/windows_cookbook</code>
+				</section>
 			</div>
 		</div>
 
@@ -165,8 +171,7 @@
 				progress: true,
 				history: true,
 				center: true,
-
-				transition: 'convex', // none/fade/slide/convex/concave/zoom
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
