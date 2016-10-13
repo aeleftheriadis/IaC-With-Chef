@@ -156,7 +156,97 @@
 				</section>
 				<section>
 					<h2>Create a windows cookbook</h2>					
-					<code class="hljs">chef generate cookbook cookbooks/windows_cookbook</code>
+					<code class="hljs">chef generate cookbook {cookbook name}</code>
+					<p>Update .kitchen.yml and add Hyper-V configuration</p>					
+					<aside class="notes">
+						Open .kitchen.yml<br/>
+						Run kitchen list to show the status of the instance that is not created right now<br/>
+						Now run kitchen converge. This command downloads the base Windows Server 2012 R2 box if needed, brings up an instance, installs chef-client, and applies the cookbook.
+						<br/>
+					</aside>
+				</section>
+				<section>
+					<h3>Configure the Local Configuration Manager (LCM)</h3>
+					<p>Verify the current configuration mode</p>
+					<code class="hljs">Get-DscLocalConfigurationManager | select -ExpandProperty "ConfigurationMode"</code>
+					<p>Create the lcm recipe</p>
+					<code class="hljs">chef generate recipe lcm</code>
+					<p>Include recipe in default.rb</p>
+					<aside class="notes">
+						To Chef υποστηρίζει το PowerShell Desired State Configuration (DSC) ώστε α ρυθμιστούν ο  IIS και το ASP.NET. <br/>
+						With PowerShell DSC, you define the state of the system – files, processes, services, registry keys, and so on – and <br/>
+						the framework ensures that the actual state matches the desired state.
+						<br/>
+						Open recipes\lcm.rb
+					</aside>
+				</section>
+				<section>
+					<h3>Create web recipe</h3>
+					<code class="hljs">chef generate recipe web</code>
+					<p>Enable IIS Role</p>
+					<p>Install ASP.NET 4.5</p>
+					<p> Install the IIS Management Console</p>
+					<p>Include recipe in default.rb</p>
+					<code class="hljs">Get-VM -Name "default-windows-2012r2" | select -ExpandProperty NetworkAdapters | select IPAddresses</code>
+					<code class="hljs">Invoke-WebRequest {IPAddress}</code>
+					<aside class="notes">
+						Run dsc scripts <br/>
+						Open recipes\web.rb <br/>
+						Get IPAddress of the Hyper-V machine
+					</aside>
+				</section>
+				<section>
+					<h3>Configure SQL Server</h3>
+					<p>Check and get sql server cookbook latest version</p>
+					<code class="hljs">knife supermarket show sql_server | findstr latest_version</code>
+					<p>Reference the cookbook from chef supermarket in metadata.rb</p>
+					<code class="hljs">chef generate recipe database</code>
+					<code class="hljs">chef generate attribute default</code>
+					Update database recipe
+					<aside class="notes">
+						Για την εγκατάσταση του sql server χρειαζόμαστε μία σειρά από attributes όπως το installation directory και ποια features θα εγκατασταθούν
+						<br/>
+						Open attributes\default.rb
+						<br/>
+						Προσθήκη στο .kitchen.yml τα αντίστοιχα attributes
+						<br/>
+						Βάζουμε έναν random password generator στο attributes αλλά για το test environment κάνουμε override βάζοντας ένα password ώστε να μπορούμε να συνδεθούμε
+
+					</aside>
+				</section>
+				<section>
+					<h3>Configure the database</h3>
+					<code class="hljs">chef generate file create-database.sql</code>
+					<p>Update database.rb recipe</p>
+					<aside class="notes">
+						Open files\default\create-database.sql<br/>
+						Include recipe in default.rb
+					</aside>
+				</section>
+				<section>
+					<h3>Configure the web application</h3>
+					<ul>
+						<li>Disable the default IIS web site</li>
+						<li>Add iis cookbook to metadata.rb</li>
+						<li>Create variables and download the web app</li>
+						<li>Create an IIS application pool, web site, and application</li>
+					</ul>
+					<aside class="notes">
+						Add recipe to web.rb to remove the default website
+					</aside>
+				</section>
+				<section>
+					<h3>Grant the Customers application access to the customer data</h3>
+					<code class="hljs">chef generate file grant-access.sql</code>
+					<p>Grant Access to Chef cache</p>
+					<aside class="notes">
+						Open files\default\grant-access.sql<br/>
+						Open database.rb
+					</aside>
+				</section>
+				<section>
+					<h1>Thank you</h1>
+					<a href="https://github.com/aeleftheriadis/IaC-With-Chef">Link to presentation and code</a>
 				</section>
 			</div>
 		</div>
@@ -192,6 +282,7 @@
 					{ src: 'plugin/notes/notes.js', async: true }
 				]
 			});
+			Reveal.configure({ slideNumber: 'c/t' });
 		</script>
 	</body>
 </html>
